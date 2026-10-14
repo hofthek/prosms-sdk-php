@@ -1,0 +1,51 @@
+{
+    "name": "prosms/prosms-php",
+    "description": "SDK PHP officiel de l'API publique ProSMS (envoi de SMS en Côte d'Ivoire).",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "sms",
+        "otp",
+        "prosms",
+        "api",
+        "cote-d-ivoire",
+        "webhook"
+    ],
+    "homepage": "https://prosms.ci",
+    "authors": [
+        {
+            "name": "ProSMS",
+            "homepage": "https://prosms.ci"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0"
+    },
+    "suggest": {
+        "psr/http-client": "Pour utiliser votre propre client HTTP PSR-18 via ProSms\\Http\\Psr18Transport."
+    },
+    "autoload": {
+        "psr-4": {
+            "ProSms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ProSms\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --testsuite unit",
+        "test:integration": "phpunit --testsuite integration"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
