@@ -2,6 +2,13 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+
+- `Message::$operatorReference` : référence attribuée par l'opérateur à l'envoi (`operator_reference` de l'API), `null` tant que le message n'est pas transmis.
+- `WebhookMessage::$operatorReference` : la même référence dans les webhooks `message.status`.
+
 ## [1.0.0] - 2026-10-13
 
 Première version publique.

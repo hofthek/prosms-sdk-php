@@ -65,6 +65,7 @@ abstract class TestCase extends BaseTestCase
             'segments' => 1,
             'carrier' => 'orange',
             'reference' => 'commande-1234',
+            'operator_reference' => 'test-5e8f2a6c1d03',
             'error' => null,
             'test' => true,
             'scheduled_at' => null,

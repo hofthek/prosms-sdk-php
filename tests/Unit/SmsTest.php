@@ -202,6 +202,7 @@ final class SmsTest extends TestCase
         self::assertNull($message->scheduledAt);
         self::assertNull($message->failedAt);
         self::assertSame('2026-10-11T09:30:04+00:00', $message->deliveredAt?->format(DATE_ATOM));
+        self::assertSame('test-5e8f2a6c1d03', $message->operatorReference);
         self::assertSame('2026-10-11T09:30:00+00:00', $message->createdAt?->format(DATE_ATOM));
     }
 

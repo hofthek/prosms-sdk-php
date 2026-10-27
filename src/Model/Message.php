@@ -22,6 +22,8 @@ final class Message
         public readonly int $segments,
         public readonly ?string $carrier,
         public readonly ?string $reference,
+        /** Identifiant attribué par l'opérateur à l'envoi (null tant que le message n'est pas transmis). */
+        public readonly ?string $operatorReference,
         public readonly ?string $error,
         public readonly bool $test,
         public readonly ?DateTimeImmutable $scheduledAt,
@@ -48,6 +50,7 @@ final class Message
             segments: Data::int($data, 'segments'),
             carrier: Data::nullableString($data, 'carrier'),
             reference: Data::nullableString($data, 'reference'),
+            operatorReference: Data::nullableString($data, 'operator_reference'),
             error: Data::nullableString($data, 'error'),
             test: Data::bool($data, 'test'),
             scheduledAt: Data::date($data, 'scheduled_at'),

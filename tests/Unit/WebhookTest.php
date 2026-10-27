@@ -28,7 +28,7 @@ final class WebhookTest extends TestCase
 
     private static function statusBody(): string
     {
-        return '{"event":"message.status","data":{"id":"0192f1b2-7c3e-7a10-9d4b-5e8f2a6c1d03","to":"+2250700000000","status":"delivered","reference":"commande-1234","error":null,"occurred_at":"2026-10-11T09:30:04Z"}}';
+        return '{"event":"message.status","data":{"id":"0192f1b2-7c3e-7a10-9d4b-5e8f2a6c1d03","to":"+2250700000000","status":"delivered","reference":"commande-1234","operator_reference":"OM-123456","error":null,"occurred_at":"2026-10-11T09:30:04Z"}}';
     }
 
     public function testSharedWebhookVector(): void
@@ -66,6 +66,7 @@ final class WebhookTest extends TestCase
         self::assertSame('+2250700000000', $event->message->to);
         self::assertSame(MessageStatus::Delivered, $event->message->statusEnum());
         self::assertSame('commande-1234', $event->message->reference);
+        self::assertSame('OM-123456', $event->message->operatorReference);
         self::assertNull($event->message->error);
         self::assertSame('2026-10-11T09:30:04+00:00', $event->message->occurredAt?->format(DATE_ATOM));
         self::assertSame('delivered', $event->data['status']);

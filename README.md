@@ -130,6 +130,7 @@ $message = $prosms->sms->get('0192f1b2-7c3e-7a10-9d4b-5e8f2a6c1d03');
 echo $message->status;                         // queued, sent, delivered, failed, cancelled
 echo $message->deliveredAt?->format(DATE_ATOM); // DateTimeImmutable en UTC, ou null
 echo $message->error;                          // code d'erreur si failed
+echo $message->operatorReference;              // référence de l'opérateur (réclamations), null avant l'envoi
 
 if ($message->statusEnum() === \ProSms\Enum\MessageStatus::Delivered) {
     // …
@@ -398,7 +399,7 @@ try {
 
 if ($event->message !== null) { // event = message.status
     // Dédoublonnez avec $event->deliveryId (livraison « au moins une fois »).
-    // $event->message->id, ->status, ->reference, ->error, ->occurredAt
+    // $event->message->id, ->status, ->reference, ->operatorReference, ->error, ->occurredAt
 }
 
 http_response_code(204);
