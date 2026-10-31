@@ -39,6 +39,7 @@ final class ErrorTest extends TestCase
             self::assertSame($code, $e->getCode(), 'getCode() renvoie le code de l\'API, comme PDOException.');
             self::assertSame('Message lisible.', $e->getMessage());
             self::assertSame('req-1', $e->headers['x-request-id']);
+            self::assertSame('req-1', $e->requestId);
             self::assertSame(['message' => 'Message lisible.', 'code' => $code], $e->json);
             self::assertJson($e->body);
         }
@@ -59,6 +60,32 @@ final class ErrorTest extends TestCase
         yield '429' => [429, 'rate_limited', RateLimitError::class];
         yield '500' => [500, 'server_error', ServerError::class];
         yield '503' => [503, 'server_error', ServerError::class];
+    }
+
+    public function testRequestIdFromHeaderThenBody(): void
+    {
+        $client = $this->client(maxRetries: 0);
+        $this->transport
+            ->push(401, ['message' => 'Clé invalide.', 'code' => 'invalid_api_key', 'request_id' => 'corps-1234'], ['X-Request-Id' => 'entete-1234'])
+            ->push(422, ['message' => 'Invalide.', 'code' => 'validation_failed', 'request_id' => '0192f1b2-7c3e-7a10-9d4b-5e8f2a6c1d03'])
+            ->push(404, ['message' => 'Introuvable.', 'code' => 'not_found'])
+            ->push(502, null, ['Content-Type' => 'text/html', 'X-Request-Id' => 'passerelle-42'], '<html>Bad Gateway</html>');
+
+        $requestIds = [];
+        for ($i = 0; $i < 4; $i++) {
+            try {
+                $client->balance->get();
+                self::fail('Erreur attendue.');
+            } catch (ApiError $e) {
+                $requestIds[] = $e->requestId;
+                if ($i === 0) {
+                    self::assertSame('Clé invalide.', $e->getMessage(), 'Le message n\'est pas modifié.');
+                }
+            }
+        }
+
+        self::assertSame(['entete-1234', '0192f1b2-7c3e-7a10-9d4b-5e8f2a6c1d03', null, 'passerelle-42'], $requestIds);
+        self::assertNull((new ApiError('m', 400, 'x'))->requestId);
     }
 
     public function testValidationErrorsByField(): void

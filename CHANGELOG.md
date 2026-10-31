@@ -8,6 +8,7 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Le 
 
 - `Message::$operatorReference` : référence attribuée par l'opérateur à l'envoi (`operator_reference` de l'API), `null` tant que le message n'est pas transmis.
 - `WebhookMessage::$operatorReference` : la même référence dans les webhooks `message.status`.
+- `ApiError::$requestId` : identifiant de la requête (en-tête `X-Request-Id`, à défaut `request_id` du corps d'erreur), `null` s'il est absent. À communiquer au support pour retrouver un appel en échec.
 
 ## [1.0.0] - 2026-10-13
 

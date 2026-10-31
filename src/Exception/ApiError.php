@@ -8,13 +8,19 @@ use ProSms\Http\Response;
 use Throwable;
 
 /**
- * Réponse d'erreur de l'API (`{ "message": "…", "code": "…", "errors"?: {…} }`).
+ * Réponse d'erreur de l'API (`{ "message": "…", "code": "…", "errors"?: {…}, "request_id": "…" }`).
  *
  * `errorCode` porte le `code` de l'API tel quel (`insufficient_balance`, `invalid_signature`…) :
  * branchez dessus plutôt que sur la classe si besoin. `getCode()` renvoie la même chaîne.
  */
 class ApiError extends ProSmsError
 {
+    /**
+     * Identifiant de la requête (en-tête `X-Request-Id`, à défaut `request_id` du corps),
+     * ou null s'il est absent. À communiquer au support pour retrouver l'appel.
+     */
+    public readonly ?string $requestId;
+
     /**
      * @param array<string, list<string>> $errors  Erreurs par champ (`validation_failed`).
      * @param array<string, string>       $headers En-têtes de la réponse, noms en minuscules.
@@ -33,6 +39,17 @@ class ApiError extends ProSmsError
         parent::__construct($message, 0, $previous);
         // Comme PDOException : le code est une chaîne.
         $this->code = $errorCode;
+        $this->requestId = self::nonEmpty($headers['x-request-id'] ?? null)
+            ?? self::nonEmpty($json['request_id'] ?? null);
+    }
+
+    private static function nonEmpty(mixed $value): ?string
+    {
+        if (! is_string($value) || trim($value) === '') {
+            return null;
+        }
+
+        return trim($value);
     }
 
     /**

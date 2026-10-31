@@ -255,7 +255,7 @@ Toutes les erreurs du SDK héritent de `ProSms\Exception\ProSmsError` :
 
 ```
 ProSmsError
-├── ApiError                     status, errorCode, getMessage(), errors, headers, body, json
+├── ApiError                     status, errorCode, getMessage(), errors, headers, body, json, requestId
 │   ├── AuthenticationError      401
 │   ├── PermissionDeniedError    403
 │   ├── NotFoundError            404
@@ -290,7 +290,7 @@ try {
         default => throw $e,
     };
 } catch (ApiError $e) {
-    error_log("ProSMS {$e->status} {$e->errorCode} : {$e->getMessage()}");
+    error_log("ProSMS {$e->status} {$e->errorCode} : {$e->getMessage()} (référence : {$e->requestId})");
 } catch (ConnectionError $e) {
     // Réseau indisponible, même après les réessais.
 }
@@ -307,6 +307,8 @@ try {
 | 422 | `ValidationError` | `validation_failed` (+ `errors`), `invalid_sender`, `no_valid_recipient` (+ `rejected()`), `otp_too_many_recipients` |
 | 429 | `RateLimitError` | `rate_limited` (+ `retryAfter`) |
 | 5xx | `ServerError` | `server_error`, ou `http_error` si la réponse n'est pas du JSON |
+
+`requestId` est l'identifiant de la requête : l'en-tête `X-Request-Id` de la réponse, à défaut le champ `request_id` du corps d'erreur, ou `null` s'il est absent. En cas de problème, communiquez `$e->requestId` au support : il permet de retrouver l'appel, même quand aucun message n'a été créé.
 
 ## Idempotence et réessais
 
