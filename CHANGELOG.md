@@ -4,6 +4,8 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Le 
 
 ## [Non publié]
 
+## [1.1.0] - 2026-11-01
+
 ### Ajouté
 
 - `Message::$operatorReference` : référence attribuée par l'opérateur à l'envoi (`operator_reference` de l'API), `null` tant que le message n'est pas transmis.
