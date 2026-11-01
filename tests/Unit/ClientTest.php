@@ -145,7 +145,7 @@ final class ClientTest extends TestCase
         self::assertNull($request->header('X-Prosms-Signature'), 'Pas de signature sans signingSecret.');
         self::assertNull($request->body);
         self::assertSame(30.0, $request->timeout);
-        self::assertMatchesRegularExpression('#^prosms-php/1\.0\.0 \(php/\d+\.\d+\.\d+.*\)$#', (string) $request->header('User-Agent'));
+        self::assertMatchesRegularExpression('#^prosms-php/' . preg_quote(ProSms::VERSION, '#') . ' \(php/\d+\.\d+\.\d+.*\)$#', (string) $request->header('User-Agent'));
     }
 
     public function testPostCarriesJsonContentTypeAndIdempotencyKey(): void
