@@ -4,6 +4,10 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Le 
 
 ## [Non publié]
 
+### Retiré
+
+- `Message::$operatorReference` et `WebhookMessage::$operatorReference` (ajoutés en 1.1.0) : l'API ne renvoie plus `operator_reference`, ni dans `GET /v1/sms` et `GET /v1/sms/{id}`, ni dans les webhooks `message.status`.
+
 ## [1.1.0] - 2026-11-01
 
 ### Ajouté

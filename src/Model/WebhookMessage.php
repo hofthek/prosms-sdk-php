@@ -18,8 +18,6 @@ final class WebhookMessage
         /** `sent`, `delivered` ou `failed` (chaîne brute). */
         public readonly string $status,
         public readonly ?string $reference,
-        /** Référence attribuée par l'opérateur, null si le message n'a pas été transmis. */
-        public readonly ?string $operatorReference,
         /** Code d'erreur de l'opérateur (ou `failed`) quand `status` = `failed`, sinon null. */
         public readonly ?string $error,
         public readonly ?DateTimeImmutable $occurredAt,
@@ -38,7 +36,6 @@ final class WebhookMessage
             to: Data::string($data, 'to'),
             status: Data::string($data, 'status'),
             reference: Data::nullableString($data, 'reference'),
-            operatorReference: Data::nullableString($data, 'operator_reference'),
             error: Data::nullableString($data, 'error'),
             occurredAt: Data::date($data, 'occurred_at'),
         );
